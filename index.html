@@ -271,8 +271,8 @@ const HOT = (M.hot && M.hot.length) ? M.hot : ['彩礼返还','夫妻共同债�
 hot.innerHTML = '热门：' + HOT.map(k=>`<a data-k="${k}">${k}</a>`).join('');
 hot.querySelectorAll('a').forEach(a=>a.onclick=()=>{ q.value=a.dataset.k; renderResults(); });
 
-/* 检索框示例词：每次打开随机、每 5 秒轮换一个真实案例焦点（含“无”字的不用） */
-const PH_POOL = (()=>{ const i=[...CASES.keys()].sort(()=>Math.random()-0.5).slice(0,60); const o=[]; i.forEach(k=>{ let s=(CASES[k].question||'').replace(/\s+/g,''); if(s.includes('无')||s.includes('①')||s.includes('，')) return; if(s.length>24) s=s.slice(0,24)+'…'; if(s.length>=6 && s.length<=26) o.push(s); }); return o.slice(0,18); })();
+/* 检索框示例词：每次打开随机、每 5 秒轮换一个真实案例焦点（只用完整短句，剔除含“无”/数字/引号/逗号的） */
+const PH_POOL = (()=>{ const i=[...CASES.keys()].sort(()=>Math.random()-0.5); const o=[]; for(const k of i){ if(o.length>=18) break; let s=(CASES[k].question||'').replace(/\s+/g,''); if(s.length<6||s.length>24) continue; if(/[0-9①-⑳0-9a-zA-Z“”‘”"'，、；：（）()/.]/.test(s)) continue; if(s.includes('无')) continue; o.push(s); } return o; })();
 let phI = Math.floor(Math.random()*PH_POOL.length);
 function rotPH(){ if(!PH_POOL.length || document.activeElement===q || q.value) return; q.placeholder = '如：' + PH_POOL[phI++ % PH_POOL.length]; }
 rotPH(); setInterval(rotPH, 5000);
