@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>中国法院2026年度案例速查</title>
+<title>中国法院2026年度案例</title>
 <style>
 :root{
   --red:#7a1420; --red2:#5c0e18; --gold:#c9a063; --gold2:#8a6a3b;
@@ -206,7 +206,7 @@ const DB = {"meta":{"series":"中国法院2026年度案例","publisher":"中国�
 const M = DB.meta, CASES = DB.cases, VOLS = DB.volumes;
 const VOLMAP = {}; VOLS.forEach(v => VOLMAP[v.no] = v);
 
-document.getElementById('hTitle').textContent = M.series + '速查';
+document.getElementById('hTitle').textContent = M.series;
 document.getElementById('hBadges').innerHTML =
   `<span class="badge">${M.version}</span><span class="badge">${M.editors}</span><span class="badge">${M.publisher} · 权威案例 · 逐层全解</span>`;
 s1.textContent = M.total; s2.textContent = M.volCount; s3.textContent = M.total;
