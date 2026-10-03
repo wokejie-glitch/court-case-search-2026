@@ -1,5 +1,5 @@
-/* 中国法院2026年度案例速查 离线缓存 case-V4.8-202610031048 */
-const V = "case-V4.8-202610031048";
+/* 中国法院2026年度案例速查 离线缓存 case-V4.9-202610031218 */
+const V = "case-V4.9-202610031218";
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(V).then(c =>
     Promise.allSettled(['./', './index.html', './manifest.webmanifest', './icons/icon.png'].map(u => c.add(u)))
