@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>配色方案对比 · 全部四套同屏</title>
+<style>
+/* ============ 方案切换器 ============ */
+*{box-sizing:border-box;margin:0;padding:0}
+.switch{position:sticky;top:0;z-index:99;display:flex;gap:8px;padding:10px 12px;background:#26241f;overflow-x:auto;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+.switch button{flex:none;border:1px solid #55504a;color:#cfc8bb;background:transparent;font-size:13px;padding:7px 14px;border-radius:20px;cursor:pointer;white-space:nowrap}
+.switch button.on{background:#c9a063;color:#26241f;border-color:#c9a063;font-weight:700}
+.hint{font-size:12px;color:#8b8578;padding:8px 14px 0}
+
+/* ============ 主题变量 ============ */
+body{min-height:100vh;background:var(--bg)}
+.page{max-width:760px;margin:0 auto;padding:14px 12px 60px}
+.tA{--bg:#f4eee1;--card:#fffdf8;--ink:#3a3226;--ink2:#7a6f5c;--line:#e4d9c2;--hl:#fff3c4;
+  --p1:#7a1420;--p2:#5c0e18;--acc:#c9a063;--acc2:#8a6a3b;--onhead:#f5e8d0;
+  --font:"Songti SC","Noto Serif CJK SC","SimSun",serif;--hfont:inherit;--radius:10px;--shadow:0 3px 12px rgba(92,14,24,.14);
+  --pc0:#2d6a5c;--pc1:#33568c;--pc2:#8c4a6b;--pc3:#8a5a1d;--pc4:#4f6b2a;--pc5:#6b5390;--rolebg:#8a7a5f;--tagstyle:grad}
+.tB{--bg:#eef1f5;--card:#ffffff;--ink:#2b3440;--ink2:#6e7a89;--line:#dbe2ea;--hl:#e8f0f9;
+  --p1:#1f3a5f;--p2:#16293f;--acc:#b98a2f;--acc2:#8a6420;--onhead:#e8eef6;
+  --font:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;--hfont:inherit;--radius:14px;--shadow:0 2px 10px rgba(31,58,95,.10);
+  --pc0:#0f6b63;--pc1:#1f5aa8;--pc2:#8a4a8f;--pc3:#a05c14;--pc4:#3f6d2e;--pc5:#54418f;--rolebg:#5b6d80;--tagstyle:flat}
+.tC{--bg:#f2efe9;--card:#fbfaf7;--ink:#33382f;--ink2:#757a68;--line:#ddd8c9;--hl:#f0ead8;
+  --p1:#2f5d50;--p2:#1e4438;--acc:#a8763e;--acc2:#7d5528;--onhead:#f0ead8;
+  --font:"Kaiti SC","STKaiti","KaiTi","Songti SC",serif;--hfont:"Songti SC","Noto Serif CJK SC",serif;--radius:4px;--shadow:0 1px 4px rgba(30,68,56,.12);
+  --pc0:#1e6b52;--pc1:#33568c;--pc2:#8c4a6b;--pc3:#8a5a1d;--pc4:#5b6b2a;--pc5:#6b5390;--rolebg:#7c8468;--tagstyle:line}
+.tD{--bg:#f7f7f8;--card:#ffffff;--ink:#1c1c20;--ink2:#71717a;--line:#e6e6ea;--hl:#f5efe9;
+  --p1:#d4380d;--p2:#8c2508;--acc:#d4380d;--acc2:#8c2508;--onhead:#ffffff;
+  --font:-apple-system,"PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;--hfont:inherit;--radius:2px;--shadow:0 1px 3px rgba(0,0,0,.06);
+  --pc0:#0b6e5f;--pc1:#1857a4;--pc2:#8f4388;--pc3:#9a5b12;--pc4:#45682a;--pc5:#4f46a0;--rolebg:#3f3f46;--tagstyle:flat}
+
+/* ============ 通用样例组件 ============ */
+.page{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.75}
+.hd{background:linear-gradient(135deg,var(--p1),var(--p2));color:var(--onhead);border-radius:var(--radius);padding:16px 18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.hd h1{font-family:var(--hfont);font-size:19px;letter-spacing:1px}
+.tD .hd{background:#1c1c20}
+.tC .hd{background:var(--p2)}
+.badges{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+.badge{font-size:11px;border:1px solid currentColor;opacity:.85;border-radius:999px;padding:1px 9px}
+.tA .badge{background:rgba(201,160,99,.18);border-color:rgba(201,160,99,.5)}
+.search{display:flex;gap:8px;margin-bottom:10px}
+.search input{flex:1;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:var(--radius);padding:10px 12px;font-size:14px;font-family:var(--font)}
+.search .go{background:var(--p1);color:#fff;border:none;border-radius:var(--radius);padding:0 18px;font-size:14px}
+.hot{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.hot a{font-size:12px;color:var(--p1);border:1px dashed var(--line);border-radius:999px;padding:2px 10px;background:var(--card);text-decoration:none}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px;margin-bottom:14px}
+.tC .card{border-left:3px solid var(--p1)}
+.tD .card{box-shadow:none}
+.q{font-weight:700;font-size:15px;color:var(--ink);line-height:1.6}
+.tagq{background:var(--p1);color:#fff;font-size:11px;border-radius:3px;padding:1px 7px;margin-right:8px;vertical-align:2px}
+.tD .tagq{border-radius:0}
+.h{font-size:13.5px;color:var(--ink2);margin-top:6px}
+.h b{color:var(--p1)}
+.src{font-size:12px;color:var(--ink2);margin-top:8px;border-top:1px dashed var(--line);padding-top:6px}
+.case-head{position:relative;background:linear-gradient(135deg,var(--p1),var(--p2));color:var(--onhead);border-radius:var(--radius);padding:16px 18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.tD .case-head{background:#1c1c20}
+.tC .case-head{background:var(--p2)}
+.crumb{font-size:11.5px;opacity:.8}
+.case-head h2{font-family:var(--hfont);font-size:18px;line-height:1.5;color:#fff;margin-top:4px}
+.core{font-size:13px;margin-top:8px;background:rgba(255,255,255,.10);border-radius:6px;padding:8px 10px}
+.idx{font-size:12px;margin-top:10px;border-top:1px solid rgba(255,255,255,.22);padding-top:8px;line-height:2}
+.idx .k{font-size:10.5px;border:1px solid rgba(255,255,255,.5);border-radius:3px;padding:0 5px;margin-right:4px}
+.prow{display:flex;gap:8px;align-items:flex-start;margin-top:6px;font-size:13px}
+.prole{font-size:11px;color:#fff;border-radius:4px;padding:1px 8px;white-space:nowrap;background:var(--rolebg)}
+.tD .prole{border-radius:0}
+.pname{font-weight:600}
+.pname.c0{color:var(--pc0)}.pname.c1{color:var(--pc1)}.pname.c2{color:var(--pc2)}
+.sec-h{display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--p1);padding-bottom:6px;margin:16px 0 10px}
+.sec-n{width:22px;height:22px;border-radius:50%;background:var(--p1);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center}
+.tD .sec-n{border-radius:0}
+.sec-h h3{font-family:var(--hfont);font-size:15.5px;color:var(--p1)}
+.tD .sec-h h3{color:var(--ink)}
+.sec-h small{margin-left:auto;font-size:11px;color:var(--ink2)}
+.body{font-size:14.5px;text-align:justify}
+.lead{font-weight:700}
+.idea{color:var(--acc2);font-weight:650;background:linear-gradient(transparent 62%,color-mix(in srgb,var(--acc) 32%,transparent) 62%);border-radius:2px;padding:0 1px}
+.pt.c0{color:var(--pc0);background:color-mix(in srgb,var(--pc0) 8%,transparent)}
+.pt.c1{color:var(--pc1);background:color-mix(in srgb,var(--pc1) 8%,transparent)}
+.pt.c2{color:var(--pc2);background:color-mix(in srgb,var(--pc2) 8%,transparent)}
+.pt{border-radius:3px;padding:0 1px;font-weight:600}
+.qline{border:1px dashed var(--line);border-radius:var(--radius);padding:8px 12px;margin:8px 0;cursor:pointer;display:flex;gap:8px;background:var(--card);font-size:13.5px}
+.qline .arr2{margin-left:auto;color:var(--ink2)}
+.lbl{display:inline-block;font-size:11px;color:var(--p1);border:1px solid var(--p1);border-radius:3px;padding:0 6px;margin:10px 0 4px}
+</style>
+.tname{position:sticky;top:0;z-index:9;background:#26241f;color:#c9a063;font-size:13px;font-weight:700;padding:10px 14px;border-top:3px solid #c9a063}
+.page{border-top:1px solid var(--line)}
+body{background:#26241f}
+</head>
+<body>
+<div class="tname">方案 A · 现状：朱红 + 鎏金 + 米白纸纹（宋体衬线）</div>
+<div class="page tA">
+<div class="hd">
+    <h1>中国法院2026年度案例 · 速查</h1>
+    <div class="badges"><span class="badge">24册完整版 V4.9预览</span><span class="badge">1571案</span><span class="badge">国家法官学院 编</span></div>
+  </div>
+
+  <div class="search"><input placeholder="输入争议焦点关键词，如：彩礼返还"><button class="go">检 索</button></div>
+  <div class="hot"><a>彩礼返还</a><a>交通事故</a><a>夫妻共同债务</a><a>工伤认定</a><a>违约金</a><a>股东出资</a></div>
+
+  <div class="card">
+    <div class="q"><span class="tagq">问</span>交通事故认定书认定驾驶人无责，是否可以免除民事赔偿责任？</div>
+    <div class="h"><b>裁判观点</b> 交通事故责任认定书是处理交通事故的证据之一，其关于事故责任的认定并不等同于民事法律上的过错责任……</div>
+    <div class="src"><b>出处：</b>道路交通纠纷（第10册）› 责任认定 ｜（2022）冀0102民初3456号 ｜ 案例名：何某诉李某等机动车交通事故责任案</div>
+  </div>
+
+  <div class="case-head">
+    <div class="crumb">【道路交通纠纷】中国法院2026年度案例 › 责任主体认定</div>
+    <h2>挂靠车辆发生事故，被挂靠单位与实际控制人责任承担</h2>
+    <div class="core"><b>本篇核心观点：</b>挂靠经营的机动车致人损害，应由挂靠人与被挂靠单位承担连带赔偿责任……</div>
+    <div class="prow"><span class="prole">原告（被上诉人）</span><span class="pname c0">石某</span></div>
+    <div class="prow"><span class="prole">被告</span><span class="pname c1">姚某</span> · <span class="pname c2">运输公司</span> · <span class="pname c1">保险公司</span></div>
+    <div class="idx">
+      <div><span class="k">案号</span>（2022）冀0102民初3456号</div>
+      <div><span class="k">索引</span>中国法院2026年度案例·道路交通纠纷（第10册）› 责任主体认定 ｜ 审理法院：石家庄市桥西区人民法院</div>
+      <div><span class="k">案例名</span>杨某等诉石某等机动车交通事故责任案</div>
+    </div>
+  </div>
+
+  <div class="sec-h"><div class="sec-n">2</div><h3>案件事实</h3><small>当事人 · 起因 · 诉请脉络</small></div>
+  <div class="body">
+    <p><span class="lead">1．关于责任主体问题。</span>被告<span class="pt c1">保险公司</span>应在交强险限额内赔偿<span class="pt c0">石某</span>损失20000.08元。<span class="pt c1">保险公司</span>拒不赔偿，<span class="pt c0">石某</span>起诉（案号：（2022）冀0102民初3456号）。</p>
+    <p style="margin-top:8px"><span class="idea">判断挂靠关系下责任主体的关键在于运行支配与运行利益归属于谁，而非仅看登记名义。</span>《民法典》第一千二百一十一条对此有明确规范意旨。</p>
+  </div>
+  <span class="lbl">本案可答的问题</span>
+  <div class="qline"><span class="tagq">Q</span><span>陆某甲等诉麻某乙等机动车交通事故责任案中，麻某乙是否应当承担民事赔偿责任？</span><span class="arr2">→</span></div>
+  <div class="qline"><span class="tagq">Q</span><span>杨某等诉石某等机动车交通事故责任案中，被挂靠的运输公司应否对事故损失承担连带责任？</span><span class="arr2">→</span></div>
+</div><div class="tname">方案 B · 玄青蓝 + 月白：藏青主色、无衬线、大圆角柔和投影（冷静现代）</div>
+<div class="page tB">
+<div class="hd">
+    <h1>中国法院2026年度案例 · 速查</h1>
+    <div class="badges"><span class="badge">24册完整版 V4.9预览</span><span class="badge">1571案</span><span class="badge">国家法官学院 编</span></div>
+  </div>
+
+  <div class="search"><input placeholder="输入争议焦点关键词，如：彩礼返还"><button class="go">检 索</button></div>
+  <div class="hot"><a>彩礼返还</a><a>交通事故</a><a>夫妻共同债务</a><a>工伤认定</a><a>违约金</a><a>股东出资</a></div>
+
+  <div class="card">
+    <div class="q"><span class="tagq">问</span>交通事故认定书认定驾驶人无责，是否可以免除民事赔偿责任？</div>
+    <div class="h"><b>裁判观点</b> 交通事故责任认定书是处理交通事故的证据之一，其关于事故责任的认定并不等同于民事法律上的过错责任……</div>
+    <div class="src"><b>出处：</b>道路交通纠纷（第10册）› 责任认定 ｜（2022）冀0102民初3456号 ｜ 案例名：何某诉李某等机动车交通事故责任案</div>
+  </div>
+
+  <div class="case-head">
+    <div class="crumb">【道路交通纠纷】中国法院2026年度案例 › 责任主体认定</div>
+    <h2>挂靠车辆发生事故，被挂靠单位与实际控制人责任承担</h2>
+    <div class="core"><b>本篇核心观点：</b>挂靠经营的机动车致人损害，应由挂靠人与被挂靠单位承担连带赔偿责任……</div>
+    <div class="prow"><span class="prole">原告（被上诉人）</span><span class="pname c0">石某</span></div>
+    <div class="prow"><span class="prole">被告</span><span class="pname c1">姚某</span> · <span class="pname c2">运输公司</span> · <span class="pname c1">保险公司</span></div>
+    <div class="idx">
+      <div><span class="k">案号</span>（2022）冀0102民初3456号</div>
+      <div><span class="k">索引</span>中国法院2026年度案例·道路交通纠纷（第10册）› 责任主体认定 ｜ 审理法院：石家庄市桥西区人民法院</div>
+      <div><span class="k">案例名</span>杨某等诉石某等机动车交通事故责任案</div>
+    </div>
+  </div>
+
+  <div class="sec-h"><div class="sec-n">2</div><h3>案件事实</h3><small>当事人 · 起因 · 诉请脉络</small></div>
+  <div class="body">
+    <p><span class="lead">1．关于责任主体问题。</span>被告<span class="pt c1">保险公司</span>应在交强险限额内赔偿<span class="pt c0">石某</span>损失20000.08元。<span class="pt c1">保险公司</span>拒不赔偿，<span class="pt c0">石某</span>起诉（案号：（2022）冀0102民初3456号）。</p>
+    <p style="margin-top:8px"><span class="idea">判断挂靠关系下责任主体的关键在于运行支配与运行利益归属于谁，而非仅看登记名义。</span>《民法典》第一千二百一十一条对此有明确规范意旨。</p>
+  </div>
+  <span class="lbl">本案可答的问题</span>
+  <div class="qline"><span class="tagq">Q</span><span>陆某甲等诉麻某乙等机动车交通事故责任案中，麻某乙是否应当承担民事赔偿责任？</span><span class="arr2">→</span></div>
+  <div class="qline"><span class="tagq">Q</span><span>杨某等诉石某等机动车交通事故责任案中，被挂靠的运输公司应否对事故损失承担连带责任？</span><span class="arr2">→</span></div>
+</div><div class="tname">方案 C · 黛绿 + 暖沙：深绿主色、楷体正文宋体标题、直角细线（书卷素雅）</div>
+<div class="page tC">
+<div class="hd">
+    <h1>中国法院2026年度案例 · 速查</h1>
+    <div class="badges"><span class="badge">24册完整版 V4.9预览</span><span class="badge">1571案</span><span class="badge">国家法官学院 编</span></div>
+  </div>
+
+  <div class="search"><input placeholder="输入争议焦点关键词，如：彩礼返还"><button class="go">检 索</button></div>
+  <div class="hot"><a>彩礼返还</a><a>交通事故</a><a>夫妻共同债务</a><a>工伤认定</a><a>违约金</a><a>股东出资</a></div>
+
+  <div class="card">
+    <div class="q"><span class="tagq">问</span>交通事故认定书认定驾驶人无责，是否可以免除民事赔偿责任？</div>
+    <div class="h"><b>裁判观点</b> 交通事故责任认定书是处理交通事故的证据之一，其关于事故责任的认定并不等同于民事法律上的过错责任……</div>
+    <div class="src"><b>出处：</b>道路交通纠纷（第10册）› 责任认定 ｜（2022）冀0102民初3456号 ｜ 案例名：何某诉李某等机动车交通事故责任案</div>
+  </div>
+
+  <div class="case-head">
+    <div class="crumb">【道路交通纠纷】中国法院2026年度案例 › 责任主体认定</div>
+    <h2>挂靠车辆发生事故，被挂靠单位与实际控制人责任承担</h2>
+    <div class="core"><b>本篇核心观点：</b>挂靠经营的机动车致人损害，应由挂靠人与被挂靠单位承担连带赔偿责任……</div>
+    <div class="prow"><span class="prole">原告（被上诉人）</span><span class="pname c0">石某</span></div>
+    <div class="prow"><span class="prole">被告</span><span class="pname c1">姚某</span> · <span class="pname c2">运输公司</span> · <span class="pname c1">保险公司</span></div>
+    <div class="idx">
+      <div><span class="k">案号</span>（2022）冀0102民初3456号</div>
+      <div><span class="k">索引</span>中国法院2026年度案例·道路交通纠纷（第10册）› 责任主体认定 ｜ 审理法院：石家庄市桥西区人民法院</div>
+      <div><span class="k">案例名</span>杨某等诉石某等机动车交通事故责任案</div>
+    </div>
+  </div>
+
+  <div class="sec-h"><div class="sec-n">2</div><h3>案件事实</h3><small>当事人 · 起因 · 诉请脉络</small></div>
+  <div class="body">
+    <p><span class="lead">1．关于责任主体问题。</span>被告<span class="pt c1">保险公司</span>应在交强险限额内赔偿<span class="pt c0">石某</span>损失20000.08元。<span class="pt c1">保险公司</span>拒不赔偿，<span class="pt c0">石某</span>起诉（案号：（2022）冀0102民初3456号）。</p>
+    <p style="margin-top:8px"><span class="idea">判断挂靠关系下责任主体的关键在于运行支配与运行利益归属于谁，而非仅看登记名义。</span>《民法典》第一千二百一十一条对此有明确规范意旨。</p>
+  </div>
+  <span class="lbl">本案可答的问题</span>
+  <div class="qline"><span class="tagq">Q</span><span>陆某甲等诉麻某乙等机动车交通事故责任案中，麻某乙是否应当承担民事赔偿责任？</span><span class="arr2">→</span></div>
+  <div class="qline"><span class="tagq">Q</span><span>杨某等诉石某等机动车交通事故责任案中，被挂靠的运输公司应否对事故损失承担连带责任？</span><span class="arr2">→</span></div>
+</div><div class="tname">方案 D · 石墨 + 朱砂点：近黑白卡、无衬线大留白、朱红仅作点缀（编辑极简）</div>
+<div class="page tD">
+<div class="hd">
+    <h1>中国法院2026年度案例 · 速查</h1>
+    <div class="badges"><span class="badge">24册完整版 V4.9预览</span><span class="badge">1571案</span><span class="badge">国家法官学院 编</span></div>
+  </div>
+
+  <div class="search"><input placeholder="输入争议焦点关键词，如：彩礼返还"><button class="go">检 索</button></div>
+  <div class="hot"><a>彩礼返还</a><a>交通事故</a><a>夫妻共同债务</a><a>工伤认定</a><a>违约金</a><a>股东出资</a></div>
+
+  <div class="card">
+    <div class="q"><span class="tagq">问</span>交通事故认定书认定驾驶人无责，是否可以免除民事赔偿责任？</div>
+    <div class="h"><b>裁判观点</b> 交通事故责任认定书是处理交通事故的证据之一，其关于事故责任的认定并不等同于民事法律上的过错责任……</div>
+    <div class="src"><b>出处：</b>道路交通纠纷（第10册）› 责任认定 ｜（2022）冀0102民初3456号 ｜ 案例名：何某诉李某等机动车交通事故责任案</div>
+  </div>
+
+  <div class="case-head">
+    <div class="crumb">【道路交通纠纷】中国法院2026年度案例 › 责任主体认定</div>
+    <h2>挂靠车辆发生事故，被挂靠单位与实际控制人责任承担</h2>
+    <div class="core"><b>本篇核心观点：</b>挂靠经营的机动车致人损害，应由挂靠人与被挂靠单位承担连带赔偿责任……</div>
+    <div class="prow"><span class="prole">原告（被上诉人）</span><span class="pname c0">石某</span></div>
+    <div class="prow"><span class="prole">被告</span><span class="pname c1">姚某</span> · <span class="pname c2">运输公司</span> · <span class="pname c1">保险公司</span></div>
+    <div class="idx">
+      <div><span class="k">案号</span>（2022）冀0102民初3456号</div>
+      <div><span class="k">索引</span>中国法院2026年度案例·道路交通纠纷（第10册）› 责任主体认定 ｜ 审理法院：石家庄市桥西区人民法院</div>
+      <div><span class="k">案例名</span>杨某等诉石某等机动车交通事故责任案</div>
+    </div>
+  </div>
+
+  <div class="sec-h"><div class="sec-n">2</div><h3>案件事实</h3><small>当事人 · 起因 · 诉请脉络</small></div>
+  <div class="body">
+    <p><span class="lead">1．关于责任主体问题。</span>被告<span class="pt c1">保险公司</span>应在交强险限额内赔偿<span class="pt c0">石某</span>损失20000.08元。<span class="pt c1">保险公司</span>拒不赔偿，<span class="pt c0">石某</span>起诉（案号：（2022）冀0102民初3456号）。</p>
+    <p style="margin-top:8px"><span class="idea">判断挂靠关系下责任主体的关键在于运行支配与运行利益归属于谁，而非仅看登记名义。</span>《民法典》第一千二百一十一条对此有明确规范意旨。</p>
+  </div>
+  <span class="lbl">本案可答的问题</span>
+  <div class="qline"><span class="tagq">Q</span><span>陆某甲等诉麻某乙等机动车交通事故责任案中，麻某乙是否应当承担民事赔偿责任？</span><span class="arr2">→</span></div>
+  <div class="qline"><span class="tagq">Q</span><span>杨某等诉石某等机动车交通事故责任案中，被挂靠的运输公司应否对事故损失承担连带责任？</span><span class="arr2">→</span></div>
+</div>
+</body>
+</html>
