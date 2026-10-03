@@ -1,0 +1,17 @@
+{
+ "name": "中国法院2026年度案例速查",
+ "short_name": "案例速查",
+ "start_url": "./index.html",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#f4eee1",
+ "theme_color": "#5c0e18",
+ "icons": [
+  {
+   "src": "icons/icon.png",
+   "sizes": "1024x1024",
+   "type": "image/png",
+   "purpose": "any"
+  }
+ ]
+}
